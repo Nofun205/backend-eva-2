@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from django.views.generic import TemplateView
 
@@ -13,4 +13,7 @@ urlpatterns = [
     
     # Frontend (Página principal tipo Coursera)
     path('', TemplateView.as_view(template_name='index.html'), name='home'),
+    
+    # Catch-all para mostrar la página 404 personalizada incluso con DEBUG=True
+    re_path(r'^.*/$', TemplateView.as_view(template_name='404.html')),
 ]

@@ -7,28 +7,47 @@
     {% load static %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'styles.css' %}?v=5">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'styles.css' %}?v=10">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 <body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-inner">
+            <a href="#" class="active">Para Individuos</a>
+            <a href="#">Para Empresas</a>
+            <a href="#">Para Universidades</a>
+            <a href="#">Para Gobiernos</a>
+        </div>
+    </div>
+
     <!-- Navbar -->
     <nav class="navbar">
         <div class="nav-left">
             <h1 class="logo">EdTech<span>.</span></h1>
-            <button class="explore-btn" id="explore-btn">Explorar</button>
+            <button class="explore-btn" id="explore-btn">Explorar <i class="ri-arrow-down-s-line"></i></button>
+            <a href="#" class="nav-link" onclick="openMiAprendizajeModal()">Mi Aprendizaje</a>
+            <a href="#" class="nav-link">Certificados</a>
+        </div>
+        
+        <div class="nav-center">
             <div class="search-bar">
-                <i class="ri-search-line"></i>
                 <input type="text" id="search-input" placeholder="¿Qué quieres aprender?">
+                <button class="search-btn"><i class="ri-search-line"></i></button>
             </div>
         </div>
+
         <div class="nav-right">
+            <i class="ri-question-line icon-btn" title="Centro de Ayuda"></i>
+            <i class="ri-sparkling-line icon-btn" title="IA Asistente"></i>
+            <i class="ri-global-line icon-btn" title="Idioma"></i>
             <button class="cart-btn" onclick="toggleCart()">
                 <i class="ri-shopping-cart-2-line"></i>
                 <span class="cart-badge" id="cart-count">0</span>
             </button>
             <div id="auth-section">
-                <button class="login-btn" onclick="openLoginModal()">Iniciar Sesión</button>
+                <!-- Inyectado por JS -->
             </div>
         </div>
     </nav>
@@ -89,13 +108,24 @@
         </div>
     </div>
 
-    <!-- Mis Cursos Modal -->
+    <!-- Mis Cursos Modal (Mis Compras) -->
     <div class="modal" id="mis-cursos-modal">
         <div class="modal-content glass" style="max-width: 600px;">
             <span class="close-modal" onclick="closeMisCursosModal()"><i class="ri-close-line"></i></span>
-            <h2>Mis Cursos Inscritos</h2>
+            <h2>Historial de Compras</h2>
             <div id="mis-cursos-list" style="max-height: 60vh; overflow-y: auto; padding-right: 1rem;">
                 <!-- Cursos cargados por JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Mi Aprendizaje Modal -->
+    <div class="modal" id="mi-aprendizaje-modal">
+        <div class="modal-content glass" style="max-width: 800px;">
+            <span class="close-modal" onclick="closeMiAprendizajeModal()"><i class="ri-close-line"></i></span>
+            <h2>Mi Aprendizaje</h2>
+            <div id="mi-aprendizaje-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; max-height: 60vh; overflow-y: auto; padding-right: 1rem;">
+                <!-- Aprendizaje cargado por JS -->
             </div>
         </div>
     </div>
@@ -109,6 +139,6 @@
         </div>
     </footer>
 
-    <script src="{% static 'app.js' %}?v=6"></script>
+    <script src="{% static 'app.js' %}?v=7"></script>
 </body>
 </html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página no encontrada - EdTech</title>
+    {% load static %}
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'styles.css' %}?v=8">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        .error-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+
+        .error-code {
+            font-size: 8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 10px 15px rgba(236, 72, 153, 0.2));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .error-title {
+            font-size: 2.5rem;
+            color: var(--text-main);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .error-desc {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 500px;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .back-home-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: white;
+            text-decoration: none;
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
+        }
+
+        .back-home-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 30px -5px rgba(79, 70, 229, 0.5);
+            color: white;
+        }
+
+        .back-home-btn i {
+            font-size: 1.4rem;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-code">404</div>
+        <h1 class="error-title">¡Ups! Te saliste de la clase</h1>
+        <p class="error-desc">La página que estás buscando no existe, ha sido movida o la URL es incorrecta. Regresa al catálogo para seguir aprendiendo.</p>
+        <a href="/" class="back-home-btn">
+            <i class="ri-home-4-line"></i>
+            Volver a la plataforma
+        </a>
+    </div>
+</body>
+</html>

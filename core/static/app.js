@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8000/api';
+const API_URL = '/api';
 
 // Estado de la app
 let token = localStorage.getItem('access_token');
@@ -31,10 +31,23 @@ function closeLoginModal() {
 function updateAuthUI() {
     const authSection = document.getElementById('auth-section');
     if (token) {
+        const initial = username ? username.charAt(0).toUpperCase() : 'U';
         authSection.innerHTML = `
-            <button class="logout-btn" style="background: var(--surface); color: var(--primary); border: 1px solid var(--primary);" onclick="openMisCursosModal()">Mis Cursos</button>
-            <span class="user-greeting" style="margin-left:10px;">Hola, ${username}</span>
-            <button class="logout-btn" onclick="logout()">Salir</button>
+            <div class="user-menu-container">
+                <div class="user-avatar" onclick="document.getElementById('user-dropdown').classList.toggle('show')">${initial}</div>
+                <div class="user-dropdown" id="user-dropdown">
+                    <a href="#" onclick="openMiAprendizajeModal()">Mis Aprendizajes</a>
+                    <a href="#" onclick="openMisCursosModal()">Mis Compras</a>
+                    <a href="#">Configuración</a>
+                    <a href="#">Centro de Ayuda</a>
+                    <a href="#" onclick="logout()">Cerrar Sesión</a>
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-promo">
+                        <span class="promo-title">Obtén EdTech <span style="background:linear-gradient(135deg, var(--primary), var(--secondary));color:white;padding:1px 6px;font-size:0.7rem;border-radius:4px;font-weight:bold;">PLUS</span></span>
+                        <span class="promo-desc" style="display:block;font-size:0.8rem;color:var(--text-muted);margin-top:2px;">Acceso a +10,000 cursos</span>
+                    </div>
+                </div>
+            </div>
         `;
     } else {
         authSection.innerHTML = `
@@ -43,6 +56,15 @@ function updateAuthUI() {
         document.getElementById('cart-count').innerText = '0';
     }
 }
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+    const container = document.querySelector('.user-menu-container');
+    if (container && !container.contains(e.target)) {
+        const dropdown = document.getElementById('user-dropdown');
+        if (dropdown) dropdown.classList.remove('show');
+    }
+});
 
 // API Calls
 async function login(e) {
@@ -285,6 +307,67 @@ async function loadMisCursos() {
         });
         list.innerHTML = html;
     } catch(err) {
-        list.innerHTML = `<p style="color:red;">Ocurrió un error al cargar tus cursos.</p>`;
+        list.innerHTML = `<p style="color:red;">Ocurrió un error al cargar tus compras.</p>`;
+    }
+}
+
+// Lógica de Mi Aprendizaje
+function openMiAprendizajeModal() {
+    document.getElementById('mi-aprendizaje-modal').classList.add('show');
+    loadMiAprendizaje();
+}
+
+function closeMiAprendizajeModal() {
+    document.getElementById('mi-aprendizaje-modal').classList.remove('show');
+}
+
+async function loadMiAprendizaje() {
+    const list = document.getElementById('mi-aprendizaje-list');
+    list.innerHTML = '<p>Cargando tus cursos...</p>';
+    if (!token) return;
+    try {
+        const res = await fetch(`${API_URL}/mis-matriculas/`, {
+            headers: {'Authorization': `Bearer ${token}`}
+        });
+        const matriculas = await res.json();
+        
+        // Extraer todos los cursos únicos de las órdenes
+        let allCourses = [];
+        matriculas.forEach(m => {
+            if(m.estado === 'PAGADO') {
+                m.detalles.forEach(d => {
+                    // Evitar duplicados si compró el mismo dos veces
+                    if(!allCourses.find(c => c.curso_titulo === d.curso_titulo)) {
+                        allCourses.push(d);
+                    }
+                });
+            }
+        });
+
+        if (allCourses.length === 0) {
+            list.innerHTML = '<p style="grid-column: 1/-1;">Aún no tienes cursos para aprender. ¡Ve al catálogo!</p>';
+            return;
+        }
+
+        let html = '';
+        allCourses.forEach(curso => {
+            html += `
+                <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column;">
+                    <div style="height: 100px; background: linear-gradient(135deg, #4f46e5, #ec4899);"></div>
+                    <div style="padding: 1rem; flex: 1; display: flex; flex-direction: column;">
+                        <h4 style="font-size: 1.1rem; color: #0f172a; margin-bottom: 0.5rem; font-weight: 700; line-height: 1.3;">${curso.curso_titulo}</h4>
+                        <div style="margin-top: auto; padding-top: 1rem;">
+                            <div style="height: 6px; background: #e2e8f0; border-radius: 3px; margin-bottom: 0.8rem; overflow: hidden;">
+                                <div style="height: 100%; width: 0%; background: #10b981;"></div>
+                            </div>
+                            <button style="width: 100%; padding: 0.6rem; background: #4f46e5; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">Ir al curso</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        list.innerHTML = html;
+    } catch(err) {
+        list.innerHTML = `<p style="color:red; grid-column: 1/-1;">Ocurrió un error al cargar tu aprendizaje.</p>`;
     }
 }
