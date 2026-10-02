@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles.css' %}?v=5">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 <body>
@@ -89,6 +89,17 @@
         </div>
     </div>
 
+    <!-- Mis Cursos Modal -->
+    <div class="modal" id="mis-cursos-modal">
+        <div class="modal-content glass" style="max-width: 600px;">
+            <span class="close-modal" onclick="closeMisCursosModal()"><i class="ri-close-line"></i></span>
+            <h2>Mis Cursos Inscritos</h2>
+            <div id="mis-cursos-list">
+                <!-- Cursos cargados por JS -->
+            </div>
+        </div>
+    </div>
+
     <!-- Pie de Página (Footer) requerido por rúbrica -->
     <footer>
         <div class="footer-content">
@@ -98,6 +109,6 @@
         </div>
     </footer>
 
-    <script src="{% static 'app.js' %}"></script>
+    <script src="{% static 'app.js' %}?v=5"></script>
 </body>
 </html>

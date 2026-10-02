@@ -32,7 +32,8 @@ function updateAuthUI() {
     const authSection = document.getElementById('auth-section');
     if (token) {
         authSection.innerHTML = `
-            <span class="user-greeting">Hola, ${username}</span>
+            <button class="logout-btn" style="background: var(--surface); color: var(--primary); border: 1px solid var(--primary);" onclick="openMisCursosModal()">Mis Cursos</button>
+            <span class="user-greeting" style="margin-left:10px;">Hola, ${username}</span>
             <button class="logout-btn" onclick="logout()">Salir</button>
         `;
     } else {
@@ -247,3 +248,43 @@ document.getElementById('explore-btn').addEventListener('click', () => {
     loadCourses();
     document.getElementById('course-grid').scrollIntoView({ behavior: 'smooth' });
 });
+
+// Mis Cursos Logic
+function openMisCursosModal() {
+    document.getElementById('mis-cursos-modal').classList.add('show');
+    loadMisCursos();
+}
+
+function closeMisCursosModal() {
+    document.getElementById('mis-cursos-modal').classList.remove('show');
+}
+
+async function loadMisCursos() {
+    const list = document.getElementById('mis-cursos-list');
+    list.innerHTML = '<p>Cargando tus órdenes...</p>';
+    if (!token) return;
+    try {
+        const res = await fetch(`${API_URL}/mis-matriculas/`, {
+            headers: {'Authorization': `Bearer ${token}`}
+        });
+        const matriculas = await res.json();
+        if (matriculas.length === 0) {
+            list.innerHTML = '<p>No tienes cursos registrados. ¡Explora el catálogo y agrega algunos!</p>';
+            return;
+        }
+        let html = '';
+        matriculas.forEach(m => {
+            html += `<div style="border:1px solid #eee; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; background: #fafafa;">`;
+            html += `<h4 style="margin-bottom:0.5rem; color: #333;">Orden #${m.id} - <span style="color: ${m.estado === 'PAGADO' ? 'green' : 'red'};">${m.estado}</span></h4>`;
+            html += `<p style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">Fecha: ${new Date(m.fecha_creacion).toLocaleDateString()}</p>`;
+            html += `<ul style="margin-top:0.5rem; padding-left: 1.2rem; color: #555;">`;
+            m.detalles.forEach(d => {
+                html += `<li>${d.curso_titulo} (Pagado: $${d.precio_congelado})</li>`;
+            });
+            html += `</ul></div>`;
+        });
+        list.innerHTML = html;
+    } catch(err) {
+        list.innerHTML = `<p style="color:red;">Ocurrió un error al cargar tus cursos.</p>`;
+    }
+}
