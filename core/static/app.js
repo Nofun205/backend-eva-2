@@ -88,9 +88,10 @@ function logout() {
     document.getElementById('overlay').classList.remove('show');
 }
 
-async function loadCourses() {
+async function loadCourses(query = '') {
     try {
-        const res = await fetch(`${API_URL}/cursos/`);
+        const url = query ? `${API_URL}/cursos/?search=${encodeURIComponent(query)}` : `${API_URL}/cursos/`;
+        const res = await fetch(url);
         const courses = await res.json();
         const grid = document.getElementById('course-grid');
         
@@ -232,3 +233,17 @@ async function checkout() {
         console.error(err);
     }
 }
+
+// Funcionalidad de Búsqueda y Explorar
+document.getElementById('search-input').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        loadCourses(e.target.value);
+        document.getElementById('course-grid').scrollIntoView({ behavior: 'smooth' });
+    }
+});
+
+document.getElementById('explore-btn').addEventListener('click', () => {
+    document.getElementById('search-input').value = '';
+    loadCourses();
+    document.getElementById('course-grid').scrollIntoView({ behavior: 'smooth' });
+});
