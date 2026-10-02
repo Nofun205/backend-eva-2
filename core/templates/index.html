@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coursera Clone - EdTech API</title>
+    {% load static %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <h1 class="logo">EdTech<span>.</span></h1>
+            <button class="explore-btn">Explorar</button>
+            <div class="search-bar">
+                <i class="ri-search-line"></i>
+                <input type="text" placeholder="¿Qué quieres aprender?">
+            </div>
+        </div>
+        <div class="nav-right">
+            <button class="cart-btn" onclick="toggleCart()">
+                <i class="ri-shopping-cart-2-line"></i>
+                <span class="cart-badge" id="cart-count">0</span>
+            </button>
+            <div id="auth-section">
+                <button class="login-btn" onclick="openLoginModal()">Iniciar Sesión</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <h2>Aprende sin límites</h2>
+            <p>Comienza, cambia o impulsa tu carrera con más de 5000 cursos, certificados profesionales y títulos de universidades y empresas de primer nivel.</p>
+            <button class="cta-btn">Únete gratis</button>
+        </div>
+    </header>
+
+    <!-- Main Catalog -->
+    <main class="catalog">
+        <h3 class="section-title">Cursos Populares</h3>
+        <div class="course-grid" id="course-grid">
+            <div class="loading">Cargando catálogo desde la API...</div>
+        </div>
+    </main>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>Tu Carrito</h3>
+            <button class="close-cart" onclick="toggleCart()"><i class="ri-close-line"></i></button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Items del carrito -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-price">$0.00</span>
+            </div>
+            <button class="checkout-btn" onclick="checkout()">Pagar ahora</button>
+        </div>
+    </div>
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content glass">
+            <span class="close-modal" onclick="closeLoginModal()"><i class="ri-close-line"></i></span>
+            <h2>Iniciar Sesión</h2>
+            <form id="login-form">
+                <div class="input-group">
+                    <label>Usuario</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="submit-btn">Ingresar</button>
+                <p id="login-error" class="error-msg"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Pie de Página (Footer) requerido por rúbrica -->
+    <footer>
+        <div class="footer-content">
+            <p><strong>Alumno:</strong> Diego Yévenes</p>
+            <p><strong>Sección:</strong> IEC N4</p>
+            <p><strong>Año:</strong> 2026</p>
+        </div>
+    </footer>
+
+    <script src="{% static 'app.js' %}"></script>
+</body>
+</html>
